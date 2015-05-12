@@ -1,0 +1,66 @@
+---
+title: "Statistical Inference Course Project"
+author: "Ryan Thomas"
+date: "May 10, 2015"
+output: html_document
+---
+
+## Overview
+The Central Limit Theorem states that the sample mean of n random draws from any probability distribution with mean mu and standard deviation sigma is more closely approximated by a normal distribution with mean mu and standard deviation sigma/sqrt(n) as n increases. In this report I will illustrate the Central Limit Theorem by investigating the sample mean of identically distributed random draws from an exponential distribution.
+
+##Simulations
+In order to illustrate the Central Limit Theorem I simulated 40,000 draws from an exponential distribution with lambda value of 0.2. From these 40,000 draws I computed 1000 sample means of size 40. 
+
+```{r  echo=TRUE}
+     set.seed(1)
+     lambda<-0.2
+     no_sims<-1000
+     sample_size<-40
+     draws<-matrix(rexp(no_sims*sample_size,rate=lambda),ncol=sample_size)
+```
+
+##Sample Mean verses Theoretical Mean
+An important result in statistics is that the expectation of a sample mean of identically distributed random variables is equal to mean of the population from which the sample came. Proof of this result can be found in the appendix.
+The mean of an exponential distribution with parameter lambda is equal to 1/lambda; see the appendix for proof. Since the distribution we have drawn from has a lambda value of 0.2, it must have an expected value of 5.0.
+
+```{r}
+     library(ggplot2)
+     qplot(apply(draws,1,mean),
+               geom="histogram",
+               binwidth=0.25,
+               main="Histogram of Sample Means",
+               xlab="Sample Mean",
+               fill=I("blue"),
+               col=I("red"))
+```
+
+##Sample Variance verese Theoretical Variance
+In the previous section we illustrated that the sample mean is centered at the population mean. In this section we will investigate the relationship between the sample variance and the variance of the population. The variance of an exponential distribution with parameter lambda is (1/lambda)^2; proof is given in the appendix. Since the lambda value of the population we are investigating is 0.2, this means that the variance of the distribution is 25.
+
+What is the variance of our sample means? 
+```{r}
+     sd(apply(draws,1,mean))
+```
+
+```{r}
+     (1/lambda)/sqrt(sample_size)
+```
+
+##Distribution
+
+## IGNORE
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+summary(cars)
+```
+
+You can also embed plots, for example:
+
+```{r, echo=FALSE}
+plot(cars)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
